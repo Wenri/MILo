@@ -112,6 +112,9 @@ def render_set(output_path, name, views, render_with_color_field):
     for idx, view in enumerate(tqdm(views, desc="Rendering progress")):
         rendering = render_with_color_field(idx, view, mesh_renderer, training=False)
         gt = view.original_image[0:3, :, :]
+        if rendering is None:
+            print(f"[WARNING] Mesh is empty after culling for view {idx}, using black image")
+            rendering = torch.zeros_like(gt)
         torchvision.utils.save_image(rendering, os.path.join(render_path, '{0:05d}'.format(idx) + ".png"))
         torchvision.utils.save_image(gt, os.path.join(gts_path, '{0:05d}'.format(idx) + ".png"))
 

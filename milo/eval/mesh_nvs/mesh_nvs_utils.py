@@ -304,7 +304,8 @@ class RenderWithColorField(torch.nn.Module):
                     return_depth=True,
                     return_normals=True
             )
-        except:
+        except Exception as e:
+            print(f"[WARNING] Mesh rendering failed: {e}")
             return None
         mesh_depth = mesh_render_pkg["depth"].squeeze()
         mesh_normal = mesh_render_pkg["normals"].squeeze()
